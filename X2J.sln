@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6540BA88-83CC-4E6B-AB75-E555625361FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X2J.Core", "X2J.Core\X2J.Core.csproj", "{F713F33A-E59D-47D6-8602-8E69A0620B32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X2J.Core.Tests", "X2J.Core.Tests\X2J.Core.Tests.csproj", "{F0736D56-FDEC-4B99-A815-A4A0360BDB83}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F713F33A-E59D-47D6-8602-8E69A0620B32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F713F33A-E59D-47D6-8602-8E69A0620B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F713F33A-E59D-47D6-8602-8E69A0620B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F713F33A-E59D-47D6-8602-8E69A0620B32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0736D56-FDEC-4B99-A815-A4A0360BDB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0736D56-FDEC-4B99-A815-A4A0360BDB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0736D56-FDEC-4B99-A815-A4A0360BDB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0736D56-FDEC-4B99-A815-A4A0360BDB83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F713F33A-E59D-47D6-8602-8E69A0620B32} = {6540BA88-83CC-4E6B-AB75-E555625361FD}
+		{F0736D56-FDEC-4B99-A815-A4A0360BDB83} = {6540BA88-83CC-4E6B-AB75-E555625361FD}
+	EndGlobalSection
+EndGlobal
