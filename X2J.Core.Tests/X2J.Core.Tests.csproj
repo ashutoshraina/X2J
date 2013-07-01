@@ -30,16 +30,71 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenerateSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="XSD\ProductSchema.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="XSD\Relationships.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="XSD\SimpleSchema.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\X2J.Core\X2J.Core.csproj">
+      <Project>{f713f33a-e59d-47d6-8602-8e69a0620b32}</Project>
+      <Name>X2J.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="XSD\JsonSchema\Relationships\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="XSD\JsonSchema\ProductSchema.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\billTo.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\city.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\comment.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\item.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\items.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\name.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\shipTo.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\state.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\street.js" />
+    <Content Include="XSD\JsonSchema\ProductSchema\zip.js" />
+    <Content Include="XSD\JsonSchema\Relationships.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\BillTo.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\city.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\name.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\ShipTo.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\state.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\street.js" />
+    <Content Include="XSD\JsonSchema\SimpleSchema\zip.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
