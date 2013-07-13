@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Annotation"
+    targetNamespace="http://tempuri.org/Annotation.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/Annotation.xsd"
+    xmlns:mstns="http://tempuri.org/Annotation.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="Dummy">
+    <xs:annotation>
+      <xs:documentation>Sample Documentation</xs:documentation>
+      <xs:appinfo>Sample Annotation</xs:appinfo>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

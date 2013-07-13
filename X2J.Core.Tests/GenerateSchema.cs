@@ -1,9 +1,7 @@
-﻿
-namespace X2J.Core.Tests
+﻿namespace X2J.Core.Tests
 {
     using NUnit.Framework;
     using PopulateJsonSchema;
-
     [TestFixture]
     public class GenerateSchema
     {
@@ -18,7 +16,7 @@ namespace X2J.Core.Tests
         }
 
         [Test]
-        public void CreateJsonSchemaByProvidingPath()
+        public void Create_Json_Schema()
         {
             WriteSchema.CreateJsonSchemaFromXsd(PathToXsd,PathToJsonSchema);
         }

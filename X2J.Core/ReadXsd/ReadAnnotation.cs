@@ -1,5 +1,4 @@
-﻿
-namespace X2J.Core.ReadXsd
+﻿namespace X2J.Core.ReadXsd
 {
     using System.Linq;
     using System.Xml.Schema;
@@ -10,7 +9,10 @@ namespace X2J.Core.ReadXsd
     public static class ReadAnnotation
     {
         /// <summary>
-        /// Returns the documentation present in the XmlSchemaAnnotation
+        /// <para>
+        /// Returns the documentation present in the XmlSchemaAnnotation. 
+        /// Annotation can have (appinfo|documentation)* i.e zero or more appinfo or documentation.
+        /// </para> 
         /// </summary>
         /// <param name="annotation">XmlSchemaAnnotation</param>
         /// <returns>Documentation attribute of the XmlSchemaAnnotation. Returns an Empty string if the annotation is null.</returns>
@@ -19,7 +21,10 @@ namespace X2J.Core.ReadXsd
             if (annotation == null || annotation.Items == null) return string.Empty;
             var documentation = annotation.Items.OfType<XmlSchemaDocumentation>()
                                           .Aggregate(" ", (current, item) => current + (item.Markup[0].InnerText + " ,"));
-            return documentation.Substring(0, documentation.Length - 1).TrimStart().TrimEnd().Replace("\n",string.Empty).Replace("\r",string.Empty).Replace("\t",string.Empty);
+            var appinfo = annotation.Items.OfType<XmlSchemaAppInfo>()
+                                    .Aggregate(" ", (current, item) => current + (item.Markup[0].InnerText + ","));
+            var constructedDocumentation = string.Concat(documentation,appinfo);
+            return constructedDocumentation.Substring(0, constructedDocumentation.Length - 1).TrimStart().TrimEnd().Replace("\n", string.Empty).Replace("\r", string.Empty).Replace("\t", string.Empty);
          }
     }
 }
