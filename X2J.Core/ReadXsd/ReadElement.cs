@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Extension Method, returns JsonSchema equivalent for element
         /// </summary>
         /// <param name="element"></param>
         /// <param name="formatting"></param>
@@ -71,7 +71,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Extension Method, returns JsonSchema equivalent for the ComplexType in an element
         /// </summary>
         /// <param name="complexType"></param>
         /// <param name="formatting"></param>
