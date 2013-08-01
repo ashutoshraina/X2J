@@ -110,7 +110,7 @@
             var jsonschema = new JsonSchema
                              {
                                  Title = filename.Substring(0, filename.Length - 4),
-                                 Id = baseschema.TargetNamespace,
+                                 Id = baseschema.TargetNamespace.StripXsdExtension(),
                                  Properties = new Dictionary<String, JsonSchema>()
                              };
 

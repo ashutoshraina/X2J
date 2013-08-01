@@ -40,6 +40,18 @@
         }
 
         /// <summary>
+        /// Replaces the .xsd with .js
+        /// </summary>
+        /// <param name="input">input string to strip the extension from</param>
+        /// <returns>string with the replaced extension</returns>
+        public static string StripXsdExtension(this string input)
+        {
+            if (input == null || input.Length < 4)
+                return input;
+            return input.Replace(".xsd", ".js");
+        }
+
+        /// <summary>
         /// Gets the value of an attribute from a XmlElement
         /// </summary>
         /// <param name="element">XmlElement</param>

@@ -49,11 +49,11 @@
                     if (element == null) continue;
                     var item = element.ProcessElement(formatting);
                     item.Title = element.QualifiedName.Name;
-                    item.Id = element.QualifiedName.Namespace + "/" + element.QualifiedName.Name + "#";
+                    item.Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#";
                     item.WriteSchemaToDirectory(directory);
                     var innerschema = new JsonSchema
                                       {
-                                          Id = element.QualifiedName.Namespace + "/" + element.QualifiedName.Name + "#"
+                                          Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#"
                                       };
                     items.Add(new JsonSchema {Title = element.Name, Extends = new List<JsonSchema> {innerschema}});
                 } //addextends

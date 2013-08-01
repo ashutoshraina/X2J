@@ -35,9 +35,7 @@
             {
                 var innerschema = new JsonSchema
                                   {
-                                      Id =
-                                          element.SubstitutionGroup.Namespace + "/" +
-                                          element.SubstitutionGroup.Name + "#"
+                                      Id = element.SubstitutionGroup.Namespace.StripXsdExtension() + "/" + element.SubstitutionGroup.Name + "#"
                                   };
                 schema.AdditionalProperties = new JsonSchema {Extends = new List<JsonSchema> {innerschema}};
             }
@@ -112,7 +110,7 @@
                                       .ToList();
                     }
                     item.Title = element.QualifiedName.Name;
-                    item.Id = element.QualifiedName.Namespace + "/" + element.QualifiedName.Name + "#";
+                    item.Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#";
                     item.Description = element.Annotation.GetDocumentation();
 
                     var innerschema = new JsonSchema {Id = item.Id};
