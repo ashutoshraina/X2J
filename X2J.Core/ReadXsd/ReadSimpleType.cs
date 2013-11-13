@@ -20,7 +20,7 @@
         {
             var schema = new JsonSchema {Type = ((JsonSchemaType) simpleType.BaseXmlSchemaType.TypeCode)};
             var description = simpleType.Annotation.GetDocumentation();
-            if (!description.Equals(""))
+            if (!string.IsNullOrEmpty(description))
                 schema.Description = description;
             if (simpleType.Content != null)
             {

@@ -27,7 +27,6 @@
                 schema.Type = attribute.GetSchemaType(out format);
                 if (format != null)
                     schema.Format = format;
-                //schema.Extends = attribute.AttributeSchemaType.BaseXmlSchemaType.QualifiedName.Namespace;
 
                 if (attribute.AttributeSchemaType.Content != null)
                 {
@@ -45,7 +44,7 @@
                     }
                 }
             }
-            if (attribute.Annotation.GetDocumentation() != "")
+            if (!string.IsNullOrEmpty(attribute.Annotation.GetDocumentation()))
                 schema.Description = attribute.Annotation.GetDocumentation();
             if (attribute.DefaultValue != null)
                 schema.Default = attribute.DefaultValue;

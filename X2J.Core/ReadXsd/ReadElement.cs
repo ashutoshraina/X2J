@@ -43,7 +43,7 @@
                 schema.MinimumItems = Convert.ToInt32(element.MinOccurs);
             if (element.MaxOccursString != null && !element.MaxOccursString.Equals("unbounded"))
                 schema.MaximumItems = Convert.ToInt32(element.MaxOccurs);
-            if (!element.Annotation.GetDocumentation().Equals(""))
+            if (!string.IsNullOrEmpty(element.Annotation.GetDocumentation()))
                 schema.Description = element.Annotation.GetDocumentation();
             if (element.ElementSchemaType != null) schema.Type = (JsonSchemaType) element.ElementSchemaType.TypeCode;
 

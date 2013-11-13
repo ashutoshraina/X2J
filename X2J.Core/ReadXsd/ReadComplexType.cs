@@ -26,7 +26,7 @@
             var schema = new JsonSchema {Properties = new Dictionary<String, JsonSchema>()};
             if (complexType.BaseXmlSchemaType != null)
                 schema.Type = (JsonSchemaType) complexType.BaseXmlSchemaType.TypeCode;
-            if (complexType.Annotation.GetDocumentation() != "")
+            if (!string.IsNullOrEmpty(complexType.Annotation.GetDocumentation()))
                 schema.Description = complexType.Annotation.GetDocumentation();
             //attributeuses for complextypes
             if (complexType.AttributeUses.Count > 0)

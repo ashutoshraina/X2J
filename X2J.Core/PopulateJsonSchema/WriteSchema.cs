@@ -118,7 +118,7 @@
                 from annotation in schemaSet.Schemas(targetNamespace).Cast<XmlSchema>()
                                             .SelectMany(s => s.Items.OfType<XmlSchemaAnnotation>())
                 let description = annotation.GetDocumentation()
-                where !(description.Equals(""))
+                where !(string.IsNullOrEmpty(description))
                 select annotation)
             {
                 jsonschema.Description = xmlSchemaAnnotation.GetDocumentation();
