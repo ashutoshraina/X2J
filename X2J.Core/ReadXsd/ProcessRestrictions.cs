@@ -42,17 +42,13 @@
                                                                 out bool pattern)
         {
             pattern = false;
-            var res = restriction.Facets.OfType<XmlSchemaEnumerationFacet>().Select(t => t.Value).ToList();
+            var res = new List<string>();
+            res = restriction.Facets.OfType<XmlSchemaEnumerationFacet>().Select(t => t.Value).ToList();
             res.AddRange(restriction.Facets.OfType<XmlSchemaMaxExclusiveFacet>().Select(t => t.Value));
             res.AddRange(restriction.Facets.OfType<XmlSchemaMinExclusiveFacet>().Select(t => t.Value));
             if (restriction.Facets.OfType<XmlSchemaPatternFacet>().Any())
                 pattern = true;
-            if (res.Count > 0)
-            {
-                var token = JToken.Parse(res.ToJsonString(Formatting.None));
-                return token.ToList();
-            }
-            return null;
+            return JToken.Parse(res.ToJsonString(Formatting.None)).ToList();
         }
 
         /// <summary>
@@ -106,7 +102,7 @@
                 schema.MinimumItems = Convert.ToInt32(childParticle.MinOccurs);
             if (childParticle.MaxOccursString != null && !childParticle.MaxOccursString.Equals("unbounded"))
                 schema.MaximumItems = Convert.ToInt32(childParticle.MaxOccurs);
-            if (!element.Annotation.GetDocumentation().Equals(""))
+            if (!string.IsNullOrEmpty(element.Annotation.GetDocumentation()))
                 schema.Description = element.Annotation.GetDocumentation();
             if (element.DefaultValue != null)
                 schema.Default = element.DefaultValue;
