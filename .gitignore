@@ -29,3 +29,8 @@ _ReSharper*/
 $tf*/
 #ignore thumbnails created by windows
 #Ignore files build by Visual Studio
+#NuGet
+packages/
+*.nupkg
+#Test files
+*.testsettings

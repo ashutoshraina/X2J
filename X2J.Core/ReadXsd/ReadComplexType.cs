@@ -1,12 +1,12 @@
 ﻿namespace X2J.Core.ReadXsd
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Schema;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Schema;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Schema;
     using Util;
 
     /// <summary>
@@ -15,20 +15,13 @@
     public static class ReadComplexType
     {
         /// <summary>
-        /// Extension Method, returns the JsonSchema equivalent of XmlSchemaType
+        /// Extension Method, adds the attribute uses <see cref="XmlSchemaComplexType.AttributeUses"/>to the JsonsSchema 
         /// </summary>
-        /// <param name="complexType">XmlSchemaType</param>
-        /// <param name="formatting">Formatting for the JsonSchema. Should be None for production use.</param>
-        /// <param name="directory">Directory in which to create to ComplexType.</param>
-        /// <returns></returns>
-        public static JsonSchema ProcessComplexType(this XmlSchemaComplexType complexType, Formatting formatting, string directory)
+        /// <param name="complexType">XmlSchemaComplexType</param>
+        /// <param name="schema">JsonSchema which needs to be augmented with the Attribute Uses</param>
+        /// <param name="formatting">Formatting for the schema</param>
+        public static void GetAttributes(this XmlSchemaComplexType complexType, JsonSchema schema, Formatting formatting)
         {
-            var schema = new JsonSchema {Properties = new Dictionary<String, JsonSchema>()};
-            if (complexType.BaseXmlSchemaType != null)
-                schema.Type = (JsonSchemaType) complexType.BaseXmlSchemaType.TypeCode;
-            if (!string.IsNullOrEmpty(complexType.Annotation.GetDocumentation()))
-                schema.Description = complexType.Annotation.GetDocumentation();
-            //attributeuses for complextypes
             if (complexType.AttributeUses.Count > 0)
             {
                 var enumerator = complexType.AttributeUses.GetEnumerator();
@@ -39,6 +32,24 @@
                         schema.Properties.Add(xmlSchemaAttribute.QualifiedName.Name, xmlSchemaAttribute.ProcessAttribute(formatting));
                 }
             }
+        }
+
+        /// <summary>
+        /// Extension Method, returns the JsonSchema equivalent of XmlSchemaType
+        /// </summary>
+        /// <param name="complexType">XmlSchemaType</param>
+        /// <param name="formatting">Formatting for the JsonSchema. Should be None for production use.</param>
+        /// <param name="directory">Directory in which to create to ComplexType.</param>
+        /// <returns></returns>
+        public static JsonSchema ProcessComplexType(this XmlSchemaComplexType complexType, Formatting formatting, string directory)
+        {
+            var schema = new JsonSchema { Properties = new Dictionary<String, JsonSchema>() };
+            if (complexType.BaseXmlSchemaType != null)
+                schema.Type = (JsonSchemaType)complexType.BaseXmlSchemaType.TypeCode;
+            if (!string.IsNullOrEmpty(complexType.Annotation.GetDocumentation()))
+                schema.Description = complexType.Annotation.GetDocumentation();
+            //attributeuses for complextypes
+            complexType.GetAttributes(schema, formatting);
             var sequence = complexType.ContentTypeParticle as XmlSchemaSequence;
             if (sequence != null)
             {
@@ -55,7 +66,7 @@
                                       {
                                           Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#"
                                       };
-                    items.Add(new JsonSchema {Title = element.Name, Extends = new List<JsonSchema> {innerschema}});
+                    items.Add(new JsonSchema { Title = element.Name, Extends = new List<JsonSchema> { innerschema } });
                 } //addextends
                 schema.Items = items;
             }

@@ -1,11 +1,11 @@
 ﻿namespace X2J.Core.ReadXsd
 {
+    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Schema;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Schema;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Schema;
     using Util;
     using Formatting = Newtonsoft.Json.Formatting;
 
@@ -37,7 +37,7 @@
                                   {
                                       Id = element.SubstitutionGroup.Namespace.StripXsdExtension() + "/" + element.SubstitutionGroup.Name + "#"
                                   };
-                schema.AdditionalProperties = new JsonSchema {Extends = new List<JsonSchema> {innerschema}};
+                schema.AdditionalProperties = new JsonSchema { Extends = new List<JsonSchema> { innerschema } };
             }
             if (element.MinOccursString != null && element.MinOccurs != 0)
                 schema.MinimumItems = Convert.ToInt32(element.MinOccurs);
@@ -45,7 +45,7 @@
                 schema.MaximumItems = Convert.ToInt32(element.MaxOccurs);
             if (!string.IsNullOrEmpty(element.Annotation.GetDocumentation()))
                 schema.Description = element.Annotation.GetDocumentation();
-            if (element.ElementSchemaType != null) schema.Type = (JsonSchemaType) element.ElementSchemaType.TypeCode;
+            if (element.ElementSchemaType != null) schema.Type = (JsonSchemaType)element.ElementSchemaType.TypeCode;
 
             return schema;
         }
@@ -77,18 +77,8 @@
         private static JsonSchema ProcessComplexTypeFromElement(XmlSchemaComplexType complexType, Formatting formatting)
         {
             //only attributes of element
-            var schema = new JsonSchema {Properties = new Dictionary<String, JsonSchema>()};
-            if (complexType.Attributes.Count > 0)
-            {
-                var enumerator = complexType.Attributes.GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    var xmlSchemaAttribute = enumerator.Current as XmlSchemaAttribute;
-                    if (xmlSchemaAttribute != null)
-                        schema.Properties.Add(xmlSchemaAttribute.QualifiedName.Name,
-                                              xmlSchemaAttribute.ProcessAttribute(formatting));
-                }
-            }
+            var schema = new JsonSchema { Properties = new Dictionary<String, JsonSchema>() };
+            complexType.GetAttributes(schema, formatting);
             var sequence = complexType.ContentTypeParticle as XmlSchemaSequence;
             if (sequence != null)
             {
@@ -113,12 +103,12 @@
                     item.Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#";
                     item.Description = element.Annotation.GetDocumentation();
 
-                    var innerschema = new JsonSchema {Id = item.Id};
+                    var innerschema = new JsonSchema { Id = item.Id };
                     schema.Properties.Add(schema.Properties.ContainsKey(item.Title) ? item.Title.ToUpper() : item.Title,
                                           new JsonSchema
                                           {
                                               Title = element.Name,
-                                              Extends = new List<JsonSchema> {innerschema}
+                                              Extends = new List<JsonSchema> { innerschema }
                                           });
                 }
             }
