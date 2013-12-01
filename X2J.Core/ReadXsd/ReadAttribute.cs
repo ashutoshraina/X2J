@@ -1,9 +1,9 @@
 ﻿namespace X2J.Core.ReadXsd
 {
-    using System.Collections.Generic;
-    using System.Xml.Schema;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Schema;
+    using System.Collections.Generic;
+    using System.Xml.Schema;
     using Util;
 
     /// <summary>
@@ -27,7 +27,8 @@
                 schema.Type = attribute.GetSchemaType(out format);
                 if (format != null)
                     schema.Format = format;
-
+                schema.Title = attribute.Name;
+                schema.Id = "/" + schema.Title + "#";
                 if (attribute.AttributeSchemaType.Content != null)
                 {
                     if (attribute.AttributeSchemaType.Content is XmlSchemaSimpleTypeRestriction)
@@ -39,8 +40,8 @@
                     {
                         var list = attribute.AttributeSchemaType.Content as XmlSchemaSimpleTypeList;
                         schema.Type = JsonSchemaType.Array;
-                        var itemschema = new JsonSchema {Type = (JsonSchemaType) list.ItemTypeName.Name.GetTypeCode()};
-                        schema.Items = new List<JsonSchema> {itemschema};
+                        var itemschema = new JsonSchema { Type = (JsonSchemaType)list.ItemTypeName.Name.GetTypeCode() };
+                        schema.Items = new List<JsonSchema> { itemschema };
                     }
                 }
             }

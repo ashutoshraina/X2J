@@ -1,16 +1,16 @@
 ﻿namespace X2J.Core.Util
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    using Newtonsoft.Json.Schema;
     using System;
     using System.Collections.Generic;
-    using System.Xml;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Schema;
-    using Formatting = Newtonsoft.Json.Formatting;
-    using System.Reflection;
-    using System.Xml.Schema;
     using System.ComponentModel;
     using System.IO;
-    using Newtonsoft.Json.Converters;
+    using System.Reflection;
+    using System.Xml;
+    using System.Xml.Schema;
+    using Formatting = Newtonsoft.Json.Formatting;
 
     /// <summary>
     /// Contains the extension methods which are used in X2J
@@ -78,7 +78,7 @@
         /// <returns>Type</returns>
         public static T GetPrivateProperty<T>(object obj, string propertyName)
         {
-            return (T) obj.GetType()
+            return (T)obj.GetType()
                           .GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic)
                           .GetValue(obj, null);
         }
@@ -91,24 +91,75 @@
         /// <returns>JsonSchemaType</returns>
         public static JsonSchemaType GetSchemaType(this XmlSchemaAttribute attribute, out string format)
         {
-            JsonSchemaType jsonSchemaType;
-            format = null;
             // Access the internal property Datatype
             var dataType = GetPrivateProperty<XmlSchemaDatatype>(attribute, "Datatype");
             var typeName = dataType.TypeCode.ToString();
 
-            if (typeName.Contains("NmToken"))
+            var result = ToJsonSchemaType(typeName);
+            format = result.Item2;
+            return result.Item1;
+        }
+
+        /// <summary>
+        /// Converts XmlSchemaDatatype to JsonSchemaType
+        /// </summary>
+        /// <param name="xmlSchemaDatatype">XmlSchemaDatatype</param>
+        /// <param name="format">out parameter which represents the format of the JsonSchemaType
+        ///     e.g. JsonSchemaType for both Date and Date-Time is string but the formats are 
+        ///         Date and Date-Time repsectively</param>
+        /// <returns></returns>
+        public static JsonSchemaType GetSchemaType(this XmlSchemaDatatype xmlSchemaDatatype, out string format)
+        {
+            var typeName = xmlSchemaDatatype.TypeCode.ToString();
+            var result = ToJsonSchemaType(typeName);
+            format = result.Item2;
+            return result.Item1;
+        }
+
+        /// <summary>
+        /// Returns a Tuple of JsonSchemaType,Format
+        /// </summary>
+        /// <param name="typeName">TypeName to convert from</param>
+        /// <returns>Tuple containing the JsonSchemaType and the format represemted as string</returns>
+        private static Tuple<JsonSchemaType, string> ToJsonSchemaType(string typeName)
+        {
+            JsonSchemaType jsonSchemaType = JsonSchemaType.Any;
+            string format = "String";
+            if (typeName.Contains("Token", StringComparison.OrdinalIgnoreCase))
             {
                 jsonSchemaType = JsonSchemaType.String;
             }
-            else if (typeName.Contains("Date"))
+            else if (typeName.Contains("int", StringComparison.OrdinalIgnoreCase))
+            {
+                jsonSchemaType = JsonSchemaType.Integer;
+            }
+            else if (typeName.Contains("Datetime", StringComparison.OrdinalIgnoreCase))
+            {
+                jsonSchemaType = JsonSchemaType.String;
+                format = "Date-Time";
+            }
+            else if (typeName.Contains("Date", StringComparison.OrdinalIgnoreCase))
             {
                 jsonSchemaType = JsonSchemaType.String;
                 format = "Date";
             }
+            else if (typeName.Contains("Decimal", StringComparison.OrdinalIgnoreCase) || (typeName.Contains("Float", StringComparison.OrdinalIgnoreCase)) || (typeName.Contains("Double", StringComparison.OrdinalIgnoreCase)))
+            {
+                jsonSchemaType = JsonSchemaType.Float;
+                format = "Float";
+            }
+            else if (typeName.Contains("boolean", StringComparison.OrdinalIgnoreCase))
+            {
+                jsonSchemaType = JsonSchemaType.Boolean;
+            }
+            else if (typeName.Contains("base64", StringComparison.OrdinalIgnoreCase))
+            {
+                jsonSchemaType = JsonSchemaType.String;
+                format = "byte";
+            }
             else
-                jsonSchemaType = (JsonSchemaType) Enum.Parse(typeof (JsonSchemaType), typeName);
-            return jsonSchemaType;
+                jsonSchemaType = (JsonSchemaType)Enum.Parse(typeof(JsonSchemaType), typeName);
+            return new Tuple<JsonSchemaType, string>(jsonSchemaType, format);
         }
 
         /// <summary>
@@ -124,7 +175,7 @@
                 new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,
-                    Converters = new BindingList<JsonConverter> {new StringEnumConverter()},
+                    Converters = new BindingList<JsonConverter> { new StringEnumConverter() },
                 }
                 );
             File.WriteAllText(directory + "\\" + schema.Title + ".js", json);
@@ -138,6 +189,11 @@
         public static IEnumerable<FileInfo> NavigateDirectories(String path)
         {
             return new DirectoryInfo(path).GetFiles("*.xsd", SearchOption.AllDirectories);
+        }
+
+        private static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source.IndexOf(toCheck, comp) >= 0;
         }
     }
 }

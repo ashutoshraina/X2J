@@ -1,12 +1,12 @@
 ﻿namespace X2J.Core.ReadXsd
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Schema;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Schema;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Schema;
     using Util;
 
     public static class ProcessRestrictions
@@ -25,7 +25,7 @@
             var result = (content as XmlSchemaSimpleTypeRestriction).ProcessSimpleTypeRestriction(out pattern);
             if (pattern)
             {
-                var patternexpr = ((XmlSchemaSimpleTypeRestriction) content).Facets.OfType<XmlSchemaPatternFacet>().First().Value;
+                var patternexpr = ((XmlSchemaSimpleTypeRestriction)content).Facets.OfType<XmlSchemaPatternFacet>().First().Value;
                 schema.Pattern = patternexpr;
             }
             else if (result != null)
@@ -80,7 +80,7 @@
                 {
                     var temp = item as XmlSchemaSequence;
                     list.AddRange(from XmlSchemaObject inneritem in temp.Items
-                                  select ((XmlSchemaElement) inneritem).QualifiedName.Name);
+                                  select ((XmlSchemaElement)inneritem).QualifiedName.Name);
                 }
                 else if (item is XmlSchemaChoice)
                     list.AddRange((item as XmlSchemaChoice).ProcessXmlSchemaChoice());
@@ -124,14 +124,19 @@
                              Properties = new Dictionary<String, JsonSchema>()
                          };
             if (contentRestriction.BaseType != null)
-                schema.Type = (JsonSchemaType) contentRestriction.BaseType.TypeCode;
+            {
+                string format;
+                schema.Type = contentRestriction.BaseType.BaseXmlSchemaType.Datatype.GetSchemaType(out format);
+                if (format != null)
+                    schema.Format = format;
+            }
             //add extends
             if (contentRestriction.Attributes.Count > 0)
             {
                 var enumerator = contentRestriction.Attributes.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var attribute = (XmlSchemaAttribute) enumerator.Current;
+                    var attribute = (XmlSchemaAttribute)enumerator.Current;
                     if (attribute == null) continue;
                     schema.Properties.Add(attribute.QualifiedName.Name, attribute.ProcessAttribute(formatting));
                 }

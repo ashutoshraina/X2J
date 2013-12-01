@@ -1,11 +1,11 @@
 ﻿namespace X2J.Core.ReadXsd
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Schema;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Schema;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Schema;
 
     /// <summary>
     /// Reads the XmlSchemaAttributeGroup
@@ -23,7 +23,9 @@
             var schema = new JsonSchema
                          {
                              Description = attributeGroup.Annotation.GetDocumentation(),
-                             Properties = new Dictionary<String, JsonSchema>()
+                             Properties = new Dictionary<String, JsonSchema>(),
+                             Title = attributeGroup.Name,
+                             Id = "/" + attributeGroup.Name + "#"
                          };
             foreach (var attribute in attributeGroup.Attributes.OfType<XmlSchemaAttribute>())
             {

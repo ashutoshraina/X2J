@@ -1,10 +1,10 @@
 ﻿namespace X2J.Core.ReadXsd
 {
-    using System.Collections.Generic;
-    using System.Xml.Schema;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Schema;
-
+    using System.Collections.Generic;
+    using System.Xml.Schema;
+    using Util;
     /// <summary>
     /// Reads the XmlSchemaSimpleType
     /// </summary>
@@ -18,7 +18,15 @@
         /// <returns></returns>
         public static JsonSchema ProcessSimpleType(this XmlSchemaSimpleType simpleType, Formatting formatting)
         {
-            var schema = new JsonSchema {Type = ((JsonSchemaType) simpleType.BaseXmlSchemaType.TypeCode)};
+            var schema = new JsonSchema();
+            if (simpleType.Datatype != null)
+            {
+                string format;
+                schema.Type = simpleType.Datatype.GetSchemaType(out format);
+                if (format != null)
+                    schema.Format = format;
+            }
+            schema.Title = simpleType.Name;
             var description = simpleType.Annotation.GetDocumentation();
             if (!string.IsNullOrEmpty(description))
                 schema.Description = description;
@@ -31,9 +39,9 @@
                     schema.Type = JsonSchemaType.Array;
                     var itemschema = new JsonSchema
                                      {
-                                         Type = (JsonSchemaType) (simpleType.Content as XmlSchemaSimpleTypeList).ItemTypeName.Name.GetTypeCode()
+                                         Type = (JsonSchemaType)(simpleType.Content as XmlSchemaSimpleTypeList).ItemTypeName.Name.GetTypeCode()
                                      };
-                    schema.Items = new List<JsonSchema> {itemschema};
+                    schema.Items = new List<JsonSchema> { itemschema };
                 }
                 else if (simpleType.Content is XmlSchemaSimpleTypeUnion)
                 {

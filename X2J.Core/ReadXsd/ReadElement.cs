@@ -45,7 +45,17 @@
                 schema.MaximumItems = Convert.ToInt32(element.MaxOccurs);
             if (!string.IsNullOrEmpty(element.Annotation.GetDocumentation()))
                 schema.Description = element.Annotation.GetDocumentation();
-            if (element.ElementSchemaType != null) schema.Type = (JsonSchemaType)element.ElementSchemaType.TypeCode;
+            if (element.ElementSchemaType.Datatype != null)
+            {
+                string format;
+                schema.Type = element.ElementSchemaType.Datatype.GetSchemaType(out format);
+                if (format != null)
+                    schema.Format = format;
+            }
+            else
+            {
+                schema.Type = JsonSchemaType.Object;
+            }
 
             return schema;
         }

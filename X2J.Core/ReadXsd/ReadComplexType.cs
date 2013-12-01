@@ -44,8 +44,14 @@
         public static JsonSchema ProcessComplexType(this XmlSchemaComplexType complexType, Formatting formatting, string directory)
         {
             var schema = new JsonSchema { Properties = new Dictionary<String, JsonSchema>() };
-            if (complexType.BaseXmlSchemaType != null)
-                schema.Type = (JsonSchemaType)complexType.BaseXmlSchemaType.TypeCode;
+            schema.Title = complexType.Name;
+            if (complexType.Datatype != null)
+            {
+                string format;
+                schema.Type = complexType.Datatype.GetSchemaType(out format);
+                if (format != null)
+                    schema.Format = format;
+            }
             if (!string.IsNullOrEmpty(complexType.Annotation.GetDocumentation()))
                 schema.Description = complexType.Annotation.GetDocumentation();
             //attributeuses for complextypes
