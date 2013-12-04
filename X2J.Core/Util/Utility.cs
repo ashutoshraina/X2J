@@ -125,40 +125,39 @@
         {
             JsonSchemaType jsonSchemaType = JsonSchemaType.Any;
             string format = "String";
-            if (typeName.Contains("Token", StringComparison.OrdinalIgnoreCase))
+            
+            if (typeName.Contains("Token", StringComparison.OrdinalIgnoreCase) || typeName.Contains("string",StringComparison.OrdinalIgnoreCase))
             {
-                jsonSchemaType = JsonSchemaType.String;
+                jsonSchemaType = JsonSchemaType.String;                
             }
             else if (typeName.Contains("int", StringComparison.OrdinalIgnoreCase))
             {
                 jsonSchemaType = JsonSchemaType.Integer;
-            }
-            else if (typeName.Contains("Datetime", StringComparison.OrdinalIgnoreCase))
-            {
-                jsonSchemaType = JsonSchemaType.String;
-                format = "Date-Time";
-            }
+                format = "Integer";            
+            }           
             else if (typeName.Contains("Date", StringComparison.OrdinalIgnoreCase))
             {
                 jsonSchemaType = JsonSchemaType.String;
                 format = "Date";
+                if (typeName.Contains("Datetime", StringComparison.OrdinalIgnoreCase))
+                {
+                    format = "Date-Time";
+                }
             }
             else if (typeName.Contains("Decimal", StringComparison.OrdinalIgnoreCase) || (typeName.Contains("Float", StringComparison.OrdinalIgnoreCase)) || (typeName.Contains("Double", StringComparison.OrdinalIgnoreCase)))
             {
                 jsonSchemaType = JsonSchemaType.Float;
-                format = "Float";
+                format = "Float";                
             }
             else if (typeName.Contains("boolean", StringComparison.OrdinalIgnoreCase))
             {
-                jsonSchemaType = JsonSchemaType.Boolean;
+                jsonSchemaType = JsonSchemaType.Boolean;                
             }
             else if (typeName.Contains("base64", StringComparison.OrdinalIgnoreCase))
             {
                 jsonSchemaType = JsonSchemaType.String;
-                format = "byte";
+                format = "byte";               
             }
-            else
-                jsonSchemaType = (JsonSchemaType)Enum.Parse(typeof(JsonSchemaType), typeName);
             return new Tuple<JsonSchemaType, string>(jsonSchemaType, format);
         }
 

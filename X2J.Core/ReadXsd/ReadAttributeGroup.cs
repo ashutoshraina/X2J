@@ -25,7 +25,7 @@
                              Description = attributeGroup.Annotation.GetDocumentation(),
                              Properties = new Dictionary<String, JsonSchema>(),
                              Title = attributeGroup.Name,
-                             Id = "/" + attributeGroup.Name + "#"
+                             Id = string.Format("/{0}#",attributeGroup.Name)
                          };
             foreach (var attribute in attributeGroup.Attributes.OfType<XmlSchemaAttribute>())
             {

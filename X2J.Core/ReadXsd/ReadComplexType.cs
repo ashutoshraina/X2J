@@ -22,14 +22,28 @@
         /// <param name="formatting">Formatting for the schema</param>
         public static void GetAttributes(this XmlSchemaComplexType complexType, JsonSchema schema, Formatting formatting)
         {
+            if (complexType == null) return;            
             if (complexType.AttributeUses.Count > 0)
             {
                 var enumerator = complexType.AttributeUses.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var xmlSchemaAttribute = enumerator.Current as XmlSchemaAttribute;
+                    var xmlSchemaAttribute = enumerator.Value as XmlSchemaAttribute;
                     if (xmlSchemaAttribute != null)
                         schema.Properties.Add(xmlSchemaAttribute.QualifiedName.Name, xmlSchemaAttribute.ProcessAttribute(formatting));
+                }
+            }
+            if (complexType.Attributes.Count > 0)
+            {
+                var enumerator = complexType.Attributes.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    var xmlSchemaAttribute = enumerator.Current as XmlSchemaAttribute;
+                    if (xmlSchemaAttribute != null)
+                    {
+                        if (!schema.Properties.ContainsKey(xmlSchemaAttribute.QualifiedName.Name))
+                        schema.Properties.Add(xmlSchemaAttribute.QualifiedName.Name, xmlSchemaAttribute.ProcessAttribute(formatting));
+                    }
                 }
             }
         }
@@ -43,8 +57,7 @@
         /// <returns></returns>
         public static JsonSchema ProcessComplexType(this XmlSchemaComplexType complexType, Formatting formatting, string directory)
         {
-            var schema = new JsonSchema { Properties = new Dictionary<String, JsonSchema>() };
-            schema.Title = complexType.Name;
+            var schema = new JsonSchema { Title = complexType.Name, Id = string.Format("/{0}#",complexType.Name), Properties = new Dictionary<String, JsonSchema>() };
             if (complexType.Datatype != null)
             {
                 string format;
@@ -66,11 +79,11 @@
                     if (element == null) continue;
                     var item = element.ProcessElement(formatting);
                     item.Title = element.QualifiedName.Name;
-                    item.Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#";
+                    item.Id = string.Format("{0}/{1}#", element.QualifiedName.Namespace.StripXsdExtension(), element.QualifiedName.Name);
                     item.WriteSchemaToDirectory(directory);
                     var innerschema = new JsonSchema
                                       {
-                                          Id = element.QualifiedName.Namespace.StripXsdExtension() + "/" + element.QualifiedName.Name + "#"
+                                          Id = string.Format("{0}/{1}#", element.QualifiedName.Namespace.StripXsdExtension(), element.QualifiedName.Name)
                                       };
                     items.Add(new JsonSchema { Title = element.Name, Extends = new List<JsonSchema> { innerschema } });
                 } //addextends

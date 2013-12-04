@@ -188,5 +188,26 @@ namespace X2J.Core.Tests.Properties {
                 return ResourceManager.GetString("SimpleSchema", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+        ///           xmlns:pg=&quot;http://tempuri.org/PriceSchema.xsd&quot;
+        ///           targetNamespace=&quot;http://tempuri.org/PriceSchema.xsd&quot;
+        ///           elementFormDefault=&quot;qualified&quot;&gt;
+        ///&lt;xsd:group name=&quot;priceGroup&quot;&gt;
+        ///  
+        ///  &lt;xsd:annotation&gt;
+        ///    &lt;xsd:documentation xml:lang=&quot;en&quot;&gt;
+        ///      A price is any one of the following:
+        ///      * Full Price (with amount)
+        ///      * Sale Price (with amount and authorization)
+        ///      * Clearance Price (with amount and authorization)
+        ///       [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string XMLSchemaGroupSample {
+            get {
+                return ResourceManager.GetString("XMLSchemaGroupSample", resourceCulture);
+            }
+        }
     }
 }

@@ -28,13 +28,12 @@
                 if (format != null)
                     schema.Format = format;
                 schema.Title = attribute.Name;
-                schema.Id = "/" + schema.Title + "#";
+                schema.Id = string.Format("/{0}#", schema.Title);
                 if (attribute.AttributeSchemaType.Content != null)
                 {
                     if (attribute.AttributeSchemaType.Content is XmlSchemaSimpleTypeRestriction)
                     {
-                        schema.AddRestrictions(attribute.AttributeSchemaType.Content as XmlSchemaSimpleTypeRestriction,
-                                               formatting);
+                        schema.AddRestrictions(attribute.AttributeSchemaType.Content as XmlSchemaSimpleTypeRestriction, formatting);
                     }
                     else if (attribute.AttributeSchemaType.Content is XmlSchemaSimpleTypeList)
                     {

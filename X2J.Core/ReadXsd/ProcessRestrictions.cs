@@ -59,11 +59,14 @@
         public static List<String> ProcessXmlSchemaChoice(this XmlSchemaChoice choice)
         {
             var list = new List<String>();
-            var schema = new JsonSchema
-                         {
-                             Description = choice.Annotation.GetDocumentation(),
-                             Properties = new Dictionary<String, JsonSchema>()
-                         };
+            if (choice == null) return list;            
+
+            var schema = new JsonSchema { Properties = new Dictionary<String, JsonSchema>() };
+            
+            var description = choice.Annotation.GetDocumentation();            
+            if (!string.IsNullOrEmpty(description))
+                schema.Description = description;
+
             if (choice.MinOccursString != null && choice.MinOccurs != 0)
                 schema.MinimumItems = Convert.ToInt32(choice.MinOccurs);
             if (choice.MaxOccursString != null && !choice.MaxOccursString.Equals("unbounded"))
@@ -153,11 +156,7 @@
         public static JsonSchema ProcessSimpleContentExtension(this XmlSchemaSimpleContentExtension contentExtension,
                                                                Formatting formatting)
         {
-            var schema = new JsonSchema
-                         {
-                             Type = (JsonSchemaType.Object),
-                             Properties = new Dictionary<String, JsonSchema>()
-                         };
+            var schema = new JsonSchema { Type = (JsonSchemaType.Object), Properties = new Dictionary<String, JsonSchema>() };
             if (contentExtension.Attributes.Count > 0)
             {
                 var enumerator = contentExtension.Attributes.GetEnumerator();
@@ -165,8 +164,7 @@
                 {
                     var xmlSchemaAttribute = enumerator.Current as XmlSchemaAttribute;
                     if (xmlSchemaAttribute != null)
-                        schema.Properties.Add(xmlSchemaAttribute.QualifiedName.Name,
-                                              xmlSchemaAttribute.ProcessAttribute(formatting));
+                        schema.Properties.Add(xmlSchemaAttribute.QualifiedName.Name, xmlSchemaAttribute.ProcessAttribute(formatting));
                     //for now removed attributegroupref
                 }
             }

@@ -27,7 +27,7 @@
             var jsonSchemas = WriteSchema.CreateJsonSchemaFromXsd(PathToXsd, PathToJsonSchema, Formatting.Indented).ToList();
 
             //Assert - We get six back
-            Assert.AreEqual(6, jsonSchemas.Count);
+            Assert.AreEqual(7, jsonSchemas.Count);
         }
 
         [Test]
@@ -49,7 +49,29 @@
 
             //Assert
             Assert.AreEqual("Mails", jsonSchema.Title);
-            Assert.AreEqual(11, jsonSchema.Properties.Count);
+            Assert.AreEqual(12, jsonSchema.Properties.Count);
+        }
+
+        [Test]
+        public void Create_Json_Schema_From_XmlSchema_With_XmlSchemaGroup()
+        {
+            //Arrange
+            // Get the assembly that contains the embedded schema
+            var xmlSchema = new XmlSchema();
+            var schemaName = "XMLSchemaGroupSample.xsd";
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var stream = assembly.GetManifestResourceStream("X2J.Core.Tests.XSD." + schemaName))
+            using (var reader = XmlReader.Create(stream))
+            {
+                xmlSchema = XmlSchema.Read(reader, new ValidationEventHandler(ValidationEventHandler));
+            }
+
+            //Act
+            var jsonSchema = WriteSchema.CreateJsonSchemaFromXmlSchema(schemaName, xmlSchema, PathToJsonSchema, Formatting.Indented);
+
+            //Assert
+            Assert.AreEqual("XMLSchemaGroupSample", jsonSchema.Title);
+            Assert.AreEqual(1, jsonSchema.Properties.Count);
         }
 
         private void ValidationEventHandler(object sender, ValidationEventArgs e)

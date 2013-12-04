@@ -66,7 +66,7 @@
                                                             Converters = new BindingList<JsonConverter> { new StringEnumConverter() }
                                                         }
                                                 );
-            File.WriteAllText(filePath + ".js", json);
+            File.WriteAllText(string.Format("{0}.js",filePath), json);
         }
 
         /// <summary>
@@ -226,6 +226,15 @@
                 var schema = element.ProcessElement(formatting);
                 schema.WriteSchemaToDirectory(jsonSchemaDirectory);
                 jsonschema.Properties.Add(element.Name, schema);
+            }
+
+            //get all the groups
+            foreach (var group in schemaSet.Schemas(targetNamespace).Cast<XmlSchema>()
+                                               .First().Items.OfType<XmlSchemaGroup>())
+            {
+                var schema = group.ProcessGroup(formatting);
+                schema.WriteSchemaToDirectory(jsonSchemaDirectory);
+                jsonschema.Properties.Add(group.Name, schema);
             }
 
             return jsonschema;

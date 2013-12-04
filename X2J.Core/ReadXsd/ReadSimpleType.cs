@@ -18,7 +18,7 @@
         /// <returns></returns>
         public static JsonSchema ProcessSimpleType(this XmlSchemaSimpleType simpleType, Formatting formatting)
         {
-            var schema = new JsonSchema();
+            var schema = new JsonSchema { Title = simpleType.Name, Id = string.Format("/{0}#",simpleType.Name) };
             if (simpleType.Datatype != null)
             {
                 string format;
@@ -26,7 +26,6 @@
                 if (format != null)
                     schema.Format = format;
             }
-            schema.Title = simpleType.Name;
             var description = simpleType.Annotation.GetDocumentation();
             if (!string.IsNullOrEmpty(description))
                 schema.Description = description;

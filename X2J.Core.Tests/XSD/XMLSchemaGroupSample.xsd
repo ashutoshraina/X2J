@@ -1,0 +1,25 @@
+﻿<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+           xmlns:pg="http://tempuri.org/PriceSchema.xsd"
+           targetNamespace="http://tempuri.org/PriceSchema.xsd"
+           elementFormDefault="qualified">
+<xsd:group name="priceGroup">
+  
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en">
+      A price is any one of the following:
+      * Full Price (with amount)
+      * Sale Price (with amount and authorization)
+      * Clearance Price (with amount and authorization)
+      * Free (with authorization)
+    </xsd:documentation>
+  </xsd:annotation>
+  
+  <xsd:choice id="pg.choice">
+    <xsd:element name="fullPrice" type="fullPriceType"/>
+    <xsd:element name="salePrice" type="salePriceType"/>
+    <xsd:element name="clearancePrice" type="clearancePriceType"/>
+    <xsd:element name="freePrice" type="freePriceType"/>
+  </xsd:choice>
+</xsd:group>
+ 
+</xsd:schema>

@@ -50,6 +50,7 @@
     <Compile Include="ReadXsd\ReadAttributeGroup.cs" />
     <Compile Include="ReadXsd\ReadComplexType.cs" />
     <Compile Include="ReadXsd\ReadElement.cs" />
+    <Compile Include="ReadXsd\ReadGroup.cs" />
     <Compile Include="ReadXsd\ReadSimpleType.cs" />
     <Compile Include="Util\Utility.cs" />
   </ItemGroup>
