@@ -57,7 +57,9 @@
         /// <returns></returns>
         public static JsonSchema ProcessComplexType(this XmlSchemaComplexType complexType, Formatting formatting, string directory)
         {
-            var schema = new JsonSchema { Title = complexType.Name, Id = string.Format("/{0}#",complexType.Name), Properties = new Dictionary<String, JsonSchema>() };
+            var schema = new JsonSchema { Title = complexType.Name, 
+                                          Id = string.Format("/{0}#",complexType.Name), 
+                                          Properties = new Dictionary<String, JsonSchema>() };
             if (complexType.Datatype != null)
             {
                 string format;
@@ -95,14 +97,7 @@
             var content = complexType.ContentModel as XmlSchemaSimpleContent;
             if (content != null)
             {
-                var xmlSchemaSimpleContentExtension = content.Content as XmlSchemaSimpleContentExtension;
-                if (xmlSchemaSimpleContentExtension != null)
-                    schema.Properties.Add(xmlSchemaSimpleContentExtension.BaseTypeName.Name,
-                                          xmlSchemaSimpleContentExtension.ProcessSimpleContentExtension(formatting));
-                var xmlSchemaSimpleContentRestriction = content.Content as XmlSchemaSimpleContentRestriction;
-                if (xmlSchemaSimpleContentRestriction != null)
-                    schema.Properties.Add(xmlSchemaSimpleContentRestriction.BaseTypeName.Name,
-                                          xmlSchemaSimpleContentRestriction.ProcessSimpleContentRestriction(formatting));
+                content.ProcessXmlSchemaSimpleContent(schema, formatting);                
             }
             return schema;
         }

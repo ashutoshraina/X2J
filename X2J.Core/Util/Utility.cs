@@ -190,6 +190,13 @@
             return new DirectoryInfo(path).GetFiles("*.xsd", SearchOption.AllDirectories);
         }
 
+        /// <summary>
+        /// Checks whether the source string contains another string or not
+        /// </summary>
+        /// <param name="source">Source string to perform the operation on</param>
+        /// <param name="toCheck">String to find</param>
+        /// <param name="comp">StringComparison type</param>
+        /// <returns></returns>
         private static bool Contains(this string source, string toCheck, StringComparison comp)
         {
             return source.IndexOf(toCheck, comp) >= 0;

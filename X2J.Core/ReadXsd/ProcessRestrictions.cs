@@ -118,8 +118,7 @@
         /// <param name="formatting">Formatting for the schema. Should be None for production use.</param>
         /// <param name="contentRestriction">XmlSchemaContentRestriction</param>
         /// <returns>JsonSchema equivalent of the restriction</returns>
-        public static JsonSchema ProcessSimpleContentRestriction(
-            this XmlSchemaSimpleContentRestriction contentRestriction, Formatting formatting)
+        public static JsonSchema ProcessSimpleContentRestriction(this XmlSchemaSimpleContentRestriction contentRestriction, Formatting formatting)
         {
             var schema = new JsonSchema
                          {

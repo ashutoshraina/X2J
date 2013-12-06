@@ -24,7 +24,7 @@
         {
             var schema = IterateOverElement(element, formatting);
             schema.Default = element.DefaultValue;
-            schema.Id = "/" + element.Name + "#";
+            schema.Id = string.Format("/{0}#",element.Name);
             if (schema.Properties != null)
             {
                 if (schema.Properties.ContainsKey("type"))
@@ -36,7 +36,7 @@
             {
                 var innerschema = new JsonSchema
                                   {
-                                      Id = element.SubstitutionGroup.Namespace.StripXsdExtension() + "/" + element.SubstitutionGroup.Name + "#"
+                                      Id = string.Format("{0}/{1}#",element.SubstitutionGroup.Namespace.StripXsdExtension(), element.SubstitutionGroup.Name)
                                   };
                 schema.AdditionalProperties = new JsonSchema { Extends = new List<JsonSchema> { innerschema } };
             }
@@ -46,6 +46,7 @@
                 schema.MaximumItems = Convert.ToInt32(element.MaxOccurs);
             if (!string.IsNullOrEmpty(element.Annotation.GetDocumentation()))
                 schema.Description = element.Annotation.GetDocumentation();
+            schema.Type = JsonSchemaType.Object;
             if (element.ElementSchemaType.Datatype != null)
             {
                 string format;
@@ -53,11 +54,7 @@
                 if (format != null)
                     schema.Format = format;
             }
-            else
-            {
-                schema.Type = JsonSchemaType.Any;
-            }
-
+            
             return schema;
         }
 
@@ -128,17 +125,28 @@
             var content = complexType.ContentModel as XmlSchemaSimpleContent;
             if (content != null)
             {
-                if (content.Content is XmlSchemaSimpleContentExtension)
-                    schema.Properties.Add((content.Content as XmlSchemaSimpleContentExtension).BaseTypeName.Name,
-                                          (content.Content as XmlSchemaSimpleContentExtension)
-                                              .ProcessSimpleContentExtension(formatting));
-                if (content.Content is XmlSchemaSimpleContentRestriction)
-                    schema.Properties.Add((content.Content as XmlSchemaSimpleContentRestriction).BaseTypeName.Name,
-                                          (content.Content as XmlSchemaSimpleContentRestriction)
-                                              .ProcessSimpleContentRestriction(formatting));
+                content.ProcessXmlSchemaSimpleContent(schema, formatting);
             }
             
             return schema;
+        }
+
+        /// <summary>
+        /// Extension method to process the XmlSchemaSimpleContent
+        /// </summary>
+        /// <param name="content">XmlSchemaSimpleContent</param>
+        /// <param name="schema">JsonSchema to append the converted content</param>
+        /// <param name="formatting">Formatting for the schema</param>
+        public static void ProcessXmlSchemaSimpleContent(this XmlSchemaSimpleContent content, JsonSchema schema, Formatting formatting)
+        {
+            if (content.Content is XmlSchemaSimpleContentExtension)
+                schema.Properties.Add((content.Content as XmlSchemaSimpleContentExtension).BaseTypeName.Name,
+                                      (content.Content as XmlSchemaSimpleContentExtension)
+                                          .ProcessSimpleContentExtension(formatting));
+            if (content.Content is XmlSchemaSimpleContentRestriction)
+                schema.Properties.Add((content.Content as XmlSchemaSimpleContentRestriction).BaseTypeName.Name,
+                                      (content.Content as XmlSchemaSimpleContentRestriction)
+                                          .ProcessSimpleContentRestriction(formatting));
         }
     }
 }
