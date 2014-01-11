@@ -1,9 +1,5 @@
 ﻿namespace X2J.Core.PopulateJsonSchema
 {
-	using Newtonsoft.Json;
-	using Newtonsoft.Json.Converters;
-	using Newtonsoft.Json.Schema;
-	using ReadXsd;
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel;
@@ -11,6 +7,10 @@
 	using System.Linq;
 	using System.Xml;
 	using System.Xml.Schema;
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Converters;
+	using Newtonsoft.Json.Schema;
+	using ReadXsd;
 	using Util;
 	using Formatting = Newtonsoft.Json.Formatting;
 

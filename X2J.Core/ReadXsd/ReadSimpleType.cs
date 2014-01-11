@@ -1,9 +1,9 @@
 ﻿namespace X2J.Core.ReadXsd
 {
-	using Newtonsoft.Json;
-	using Newtonsoft.Json.Schema;
 	using System.Collections.Generic;
 	using System.Xml.Schema;
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Schema;
 	using Util;
 
 	/// <summary>

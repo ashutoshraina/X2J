@@ -1,11 +1,11 @@
 ﻿namespace X2J.Core.Tests
 {
-	using NUnit.Framework;
-	using PopulateJsonSchema;
 	using System.Linq;
 	using System.Reflection;
 	using System.Xml;
 	using System.Xml.Schema;
+	using NUnit.Framework;
+	using PopulateJsonSchema;
 	using Formatting = Newtonsoft.Json.Formatting;
 
 	[TestFixture]

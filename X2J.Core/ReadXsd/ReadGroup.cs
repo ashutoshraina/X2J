@@ -1,14 +1,14 @@
 ﻿
 namespace X2J.Core.ReadXsd
 {
-	using Newtonsoft.Json.Schema;
 	using System;
 	using System.Collections.Generic;
-	using System.Xml.Schema;
-	using Formatting = Newtonsoft.Json.Formatting;
 	using System.Linq;
+	using System.Xml.Schema;
 	using Newtonsoft.Json.Linq;
+	using Newtonsoft.Json.Schema;
 	using Util;
+	using Formatting = Newtonsoft.Json.Formatting;
 
 	/// <summary>
 	/// Reads XmlSchemaGroup

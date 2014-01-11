@@ -1,12 +1,12 @@
 ﻿namespace X2J.Core.ReadXsd
 {
-	using Newtonsoft.Json;
-	using Newtonsoft.Json.Linq;
-	using Newtonsoft.Json.Schema;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Xml.Schema;
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Linq;
+	using Newtonsoft.Json.Schema;
 	using Util;
 
 	public static class ProcessRestrictions {

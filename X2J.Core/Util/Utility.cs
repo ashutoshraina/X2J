@@ -1,8 +1,5 @@
 ﻿namespace X2J.Core.Util
 {
-	using Newtonsoft.Json;
-	using Newtonsoft.Json.Converters;
-	using Newtonsoft.Json.Schema;
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel;
@@ -10,6 +7,9 @@
 	using System.Reflection;
 	using System.Xml;
 	using System.Xml.Schema;
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Converters;
+	using Newtonsoft.Json.Schema;
 	using Formatting = Newtonsoft.Json.Formatting;
 
 	/// <summary>
