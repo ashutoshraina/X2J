@@ -164,14 +164,11 @@
 		/// <param name="directory">Path of the directory</param>
 		public static void WriteSchemaToDirectory (this JsonSchema schema,string directory) {
 			var json = JsonConvert.SerializeObject(
-				           schema,
-				           Formatting.Indented,
-				           new JsonSerializerSettings {	
-					NullValueHandling = NullValueHandling.Ignore, 
-					Converters = new BindingList<JsonConverter> { new StringEnumConverter() },
-				}
-			           );
-			File.WriteAllText(directory + "\\" + schema.Title + ".js", json);
+				           schema, Formatting.Indented, new JsonSerializerSettings {
+                                NullValueHandling = NullValueHandling.Ignore, 
+					            Converters = new BindingList<JsonConverter> { new StringEnumConverter() }} );
+            Console.WriteLine(String.Format("Writing out {0} to directory {1}",schema.Title,directory));
+			File.WriteAllText(Path.Combine(directory, schema.Title + ".js"), json, System.Text.Encoding.UTF8);
 		}
 
 		/// <summary>
