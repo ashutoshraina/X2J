@@ -16,7 +16,7 @@
 
 		[TestFixtureSetUp]
 		public void Initialise () {
-			PathToJsonSchema = @"JsonSchema";
+			PathToJsonSchema = @"..\..\JsonSchema";
 			PathToXsd = @"XSD";
 		}
 

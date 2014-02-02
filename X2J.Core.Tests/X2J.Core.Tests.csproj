@@ -115,4 +115,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JsonSchema\" />
+  </ItemGroup>
 </Project>
