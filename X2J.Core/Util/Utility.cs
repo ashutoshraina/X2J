@@ -167,8 +167,8 @@
 				           schema, Formatting.Indented, new JsonSerializerSettings {
                                 NullValueHandling = NullValueHandling.Ignore, 
 					            Converters = new BindingList<JsonConverter> { new StringEnumConverter() }} );
-            Console.WriteLine(String.Format("Writing out {0} to directory {1}",schema.Title,directory));
-			File.WriteAllText(Path.Combine(directory, schema.Title + ".js"), json, System.Text.Encoding.UTF8);
+            Console.WriteLine(String.Format("Writing out {0}", Path.Combine(directory, schema.Title + ".js")));
+			File.WriteAllText(directory + @"\" + schema.Title + ".js", json, System.Text.Encoding.UTF8);
 		}
 
 		/// <summary>
