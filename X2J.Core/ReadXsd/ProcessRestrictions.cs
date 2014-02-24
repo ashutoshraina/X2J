@@ -36,8 +36,7 @@
 		/// <returns>A List of JToken with the restrictions or null if no restrictions are found</returns>
 		public static List<JToken> ProcessSimpleTypeRestriction (this XmlSchemaSimpleTypeRestriction restriction,out bool pattern) {
 			pattern = false;
-			var res = new List<string>();
-			res = restriction.Facets.OfType<XmlSchemaEnumerationFacet>().Select(t => t.Value).ToList();
+		    var res = restriction.Facets.OfType<XmlSchemaEnumerationFacet>().Select(t => t.Value).ToList();
 			res.AddRange(restriction.Facets.OfType<XmlSchemaMaxExclusiveFacet>().Select(t => t.Value));
 			res.AddRange(restriction.Facets.OfType<XmlSchemaMinExclusiveFacet>().Select(t => t.Value));
 			if ( restriction.Facets.OfType<XmlSchemaPatternFacet>().Any() )

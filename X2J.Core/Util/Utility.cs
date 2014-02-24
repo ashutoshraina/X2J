@@ -76,12 +76,10 @@
 				var propInfo = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
 				if ( propInfo != null ) {
 					return (T)propInfo.GetValue(obj, null);
-				} else {
-					return null;
 				}
-
+			    return null;
 			} catch (Exception ex) {
-				Console.WriteLine(string.Format("Error looking up private property {0} in {1}", propertyName, obj));
+				Console.WriteLine("Error looking up private property {0} in {1}", propertyName, obj);
 				Console.WriteLine(ex.Message);
 				return null;
 			}
@@ -129,8 +127,8 @@
 		/// <param name="typeName">TypeName to convert from</param>
 		/// <returns>Tuple containing the JsonSchemaType and the format represemted as string</returns>
 		private static Tuple<JsonSchemaType, string> ToJsonSchemaType (string typeName) {
-			JsonSchemaType jsonSchemaType = JsonSchemaType.Any;
-			string format = "String";
+			var jsonSchemaType = JsonSchemaType.Any;
+			var format = "String";
             
 			if ( typeName.Contains("Token", StringComparison.OrdinalIgnoreCase) || typeName.Contains("string", StringComparison.OrdinalIgnoreCase) ) {
 				jsonSchemaType = JsonSchemaType.String;                
@@ -167,7 +165,7 @@
 				           schema, Formatting.Indented, new JsonSerializerSettings {
                                 NullValueHandling = NullValueHandling.Ignore, 
 					            Converters = new BindingList<JsonConverter> { new StringEnumConverter() }} );
-            Console.WriteLine(String.Format("Writing out {0}", Path.Combine(directory, schema.Title + ".js")));
+            Console.WriteLine("Writing out {0}", Path.Combine(directory, schema.Title + ".js"));
 			File.WriteAllText(directory + @"\" + schema.Title + ".js", json, System.Text.Encoding.UTF8);
 		}
 

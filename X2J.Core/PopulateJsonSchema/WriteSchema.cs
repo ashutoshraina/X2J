@@ -63,13 +63,13 @@
 			File.WriteAllText(string.Format("{0}.js", filePath), json);
 		}
 
-		/// <summary>
-		/// Creates JsonSchema from XSD
-		/// </summary>
-		/// <param name="xsdDirectory">Directory where XSD files are located</param>
-		/// <param name="jsonSchemaDirectory">Directory for JsonSchema</param>
-		/// <param name="formatting">Formatting for the JsonSchema. Should be None for production use.</param>
-		public static IEnumerable<JsonSchema> CreateJsonSchemaFromXsd (string pathToXsdDirectory,string pathToJsonSchemaDirectory,Formatting formatting = Formatting.None) {
+	    /// <summary>
+	    /// Creates JsonSchema from XSD
+	    /// </summary>
+	    /// <param name="pathToJsonSchemaDirectory"></param>
+	    /// <param name="formatting">Formatting for the JsonSchema. Should be None for production use.</param>
+	    /// <param name="pathToXsdDirectory"></param>
+	    public static IEnumerable<JsonSchema> CreateJsonSchemaFromXsd (string pathToXsdDirectory,string pathToJsonSchemaDirectory,Formatting formatting = Formatting.None) {
 			if ( pathToXsdDirectory == null )
 				throw new ArgumentNullException("pathToXsdDirectory");
 			if ( pathToJsonSchemaDirectory == null )
@@ -77,10 +77,7 @@
 
 			var files = Utility.NavigateDirectories(pathToXsdDirectory);
 			var directoryInfo = new DirectoryInfo(pathToJsonSchemaDirectory);
-			foreach (var file in files) {
-				var jsonSchemadirectory = Directory.CreateDirectory(directoryInfo + "\\" + file.Name.Substring(0, file.Name.Length - 4));
-				yield return CreateJsonSchema(file.Name, file.FullName, jsonSchemadirectory.FullName, formatting);
-			}
+			return from file in files let jsonSchemadirectory = Directory.CreateDirectory(directoryInfo + "\\" + file.Name.Substring(0, file.Name.Length - 4)) select CreateJsonSchema(file.Name, file.FullName, jsonSchemadirectory.FullName, formatting);
 		}
 
 		/// <summary>
@@ -92,9 +89,7 @@
 		/// <param name="formatting">Formatting for the JsonSchema. Should be None for production use.</param>
 		public static JsonSchema CreateJsonSchemaFromXsdContent (string xsdFileName,string xsdContent,string jsonSchemaDirectory,Formatting formatting = Formatting.None) {
 			var schemaReader = new StringReader(xsdContent);
-			XmlSchema xmlSchema = XmlSchema.Read(schemaReader, (sender,args) => {
-				ValidationCallback(sender, args);
-			});
+			XmlSchema xmlSchema = XmlSchema.Read(schemaReader, ValidationCallback);
 			return CreateJsonSchemaFromXmlSchema(xsdFileName, xmlSchema, jsonSchemaDirectory, formatting);
 		}
 
@@ -116,14 +111,14 @@
 			return CreateJsonSchema(xsdFileName, jsonSchemaDirectory, formatting, targetNamespace, schemaSet, baseschema);
 		}
 
-		/// <summary>
-		/// Loads the file from the directory with the specified perimeters
-		/// </summary>
-		/// <param name="filename">FileName of the XSD document</param>
-		/// <param name="filepath">Path to the File</param>
-		/// <param name="directory"></param>
-		/// <param name="formatting">Formatting for the JsonSchema. Should be None for production use</param>
-		private static JsonSchema CreateJsonSchema (string xsdFileName,string xsdFilePath,string jsonSchemaDirectory,Formatting formatting) {
+	    /// <summary>
+	    /// Loads the file from the directory with the specified perimeters
+	    /// </summary>
+	    /// <param name="jsonSchemaDirectory"></param>
+	    /// <param name="formatting">Formatting for the JsonSchema. Should be None for production use</param>
+	    /// <param name="xsdFileName"></param>
+	    /// <param name="xsdFilePath"></param>
+	    private static JsonSchema CreateJsonSchema (string xsdFileName,string xsdFilePath,string jsonSchemaDirectory,Formatting formatting) {
 			var targetNamespace = GetTargetSchema(xsdFilePath);
 			var schemaSet = new XmlSchemaSet();
 			schemaSet.ValidationEventHandler += ValidationCallback;

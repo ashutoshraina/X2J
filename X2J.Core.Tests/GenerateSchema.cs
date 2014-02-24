@@ -33,12 +33,12 @@
 		public void Create_Json_Schema_From_XmlSchema () {
 			//Arrange
 			// Get the assembly that contains the embedded schema
-			var xmlSchema = new XmlSchema();
-			var schemaName = "Mails.xsd";
+			XmlSchema xmlSchema;
+			const string schemaName = "Mails.xsd";
 			var assembly = Assembly.GetExecutingAssembly();
 			using (var stream = assembly.GetManifestResourceStream("X2J.Core.Tests.XSD." + schemaName))
 			using (var reader = XmlReader.Create(stream)) {
-				xmlSchema = XmlSchema.Read(reader, new ValidationEventHandler(ValidationEventHandler));
+				xmlSchema = XmlSchema.Read(reader, ValidationEventHandler);
 			}
 
 			//Act
@@ -53,12 +53,12 @@
 		public void Create_Json_Schema_From_XmlSchema_With_XmlSchemaGroup () {
 			//Arrange
 			// Get the assembly that contains the embedded schema
-			var xmlSchema = new XmlSchema();
-			var schemaName = "XMLSchemaGroupSample.xsd";
+			XmlSchema xmlSchema;
+			const string schemaName = "XMLSchemaGroupSample.xsd";
 			var assembly = Assembly.GetExecutingAssembly();
 			using (var stream = assembly.GetManifestResourceStream("X2J.Core.Tests.XSD." + schemaName))
 			using (var reader = XmlReader.Create(stream)) {
-				xmlSchema = XmlSchema.Read(reader, new ValidationEventHandler(ValidationEventHandler));
+				xmlSchema = XmlSchema.Read(reader, ValidationEventHandler);
 			}
 
 			//Act
