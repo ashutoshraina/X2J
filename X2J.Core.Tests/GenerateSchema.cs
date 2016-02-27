@@ -14,14 +14,14 @@
 
 		public string PathToJsonSchema { get; set; }
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void Initialise () {
 			PathToJsonSchema = @"..\..\JsonSchema";
 			PathToXsd = @"XSD";
 		}
 
 		[Test]
-		public void Create_Json_Schema_From_XSD_OnDisk () {
+		public void ShouldCreateJsonSchemaFromXSDOnDisk () {
 			// Act - Sending in 6 schemas
 			var jsonSchemas = WriteSchema.CreateJsonSchemaFromXsd(PathToXsd, PathToJsonSchema, Formatting.Indented).ToList();
 
@@ -30,7 +30,7 @@
 		}
 
 		[Test]
-		public void Create_Json_Schema_From_XmlSchema () {
+		public void ShouldCreateJsonSchemaFromXmlSchema () {
 			//Arrange
 			// Get the assembly that contains the embedded schema
 			XmlSchema xmlSchema;
@@ -50,7 +50,7 @@
 		}
 
 		[Test]
-		public void Create_Json_Schema_From_XmlSchema_With_XmlSchemaGroup () {
+		public void ShouldCreateJsonSchemaFromXmlSchemaWithXmlSchemaGroup () {
 			//Arrange
 			// Get the assembly that contains the embedded schema
 			XmlSchema xmlSchema;
