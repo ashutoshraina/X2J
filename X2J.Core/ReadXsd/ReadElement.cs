@@ -22,7 +22,7 @@
 		public static JsonSchema ProcessElement (this XmlSchemaElement element,Formatting formatting) {
 			var schema = IterateOverElement(element, formatting);
 			schema.Default = element.DefaultValue;
-			schema.Id = string.Format("/{0}#", element.Name);
+			schema.Id = $"/{element.Name}#";
 			if ( schema.Properties != null ) {
 				if ( schema.Properties.ContainsKey("type") )
 					schema.Properties.Remove("type");
@@ -31,7 +31,7 @@
 			}
 			if ( !element.SubstitutionGroup.IsEmpty ) {
 				var innerschema = new JsonSchema {
-					Id = string.Format("{0}/{1}#", element.SubstitutionGroup.Namespace.StripXsdExtension(), element.SubstitutionGroup.Name)
+					Id = $"{element.SubstitutionGroup.Namespace.StripXsdExtension()}/{element.SubstitutionGroup.Name}#"
 				};
 				schema.AdditionalProperties = new JsonSchema { Extends = new List<JsonSchema> { innerschema } };
 			}
@@ -84,8 +84,6 @@
 				foreach (var element in sequence.Items.Cast<XmlSchemaParticle>()
                                                 .Select(childParticle => (childParticle as XmlSchemaElement))
                                                 .Where(element => element != null)) {
-					if ( element == null )
-						continue;
 					var item = new JsonSchema();
 					if ( element.ElementSchemaType is XmlSchemaSimpleType )
 						item = (element.ElementSchemaType as XmlSchemaSimpleType).ProcessSimpleType(formatting);
@@ -111,10 +109,8 @@
 			if ( choice != null )
 				schema.Enum = JToken.Parse(choice.ProcessXmlSchemaChoice().ToJsonString(Formatting.None)).ToList();
 			var content = complexType.ContentModel as XmlSchemaSimpleContent;
-			if ( content != null ) {
-				content.ProcessXmlSchemaSimpleContent(schema, formatting);
-			}
-            
+			content?.ProcessXmlSchemaSimpleContent(schema, formatting);
+
 			return schema;
 		}
 

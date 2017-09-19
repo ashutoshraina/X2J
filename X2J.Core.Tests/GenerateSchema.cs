@@ -21,7 +21,7 @@
 		}
 
 		[Test]
-		public void ShouldCreateJsonSchemaFromXSDOnDisk () {
+		public void ShouldCreateJsonSchemaFromXsdOnDisk () {
 			// Act - Sending in 6 schemas
 			var jsonSchemas = WriteSchema.CreateJsonSchemaFromXsd(PathToXsd, PathToJsonSchema, Formatting.Indented).ToList();
 

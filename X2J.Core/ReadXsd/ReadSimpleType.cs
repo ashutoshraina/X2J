@@ -17,7 +17,7 @@
 		/// <param name="formatting">Formatting for the JsonSchema. Should be None for production use.</param>
 		/// <returns></returns>
 		public static JsonSchema ProcessSimpleType (this XmlSchemaSimpleType simpleType,Formatting formatting) {
-			var schema = new JsonSchema { Title = simpleType.Name, Id = string.Format("/{0}#", simpleType.Name) };
+			var schema = new JsonSchema { Title = simpleType.Name, Id = $"/{simpleType.Name}#"};
 			if ( simpleType.Datatype != null ) {
 				string format;
 				schema.Type = simpleType.Datatype.GetSchemaType(out format);

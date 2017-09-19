@@ -22,7 +22,7 @@ namespace X2J.Core.ReadXsd
 		/// <returns>JsonSchema representation of the XmlSchemaGroup</returns>
 		public static JsonSchema ProcessGroup (this XmlSchemaGroup group,Formatting formatting) {
 			var schema = new JsonSchema {
-				Id = string.Format("/{0}#", group.Name),
+				Id = $"/{@group.Name}#",
 				Title = group.Name,
 				Properties = new Dictionary<String, JsonSchema>()
 			};

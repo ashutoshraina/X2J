@@ -51,8 +51,8 @@
 		/// <returns></returns>
 		public static JsonSchema ProcessComplexType (this XmlSchemaComplexType complexType,Formatting formatting,string directory) {
 			var schema = new JsonSchema { Title = complexType.Name, 
-				Id = string.Format("/{0}#", complexType.Name), 
-				Properties = new Dictionary<String, JsonSchema>()
+				Id = $"/{complexType.Name}#", 
+				Properties = new Dictionary<string, JsonSchema>()
 			};
 			if ( complexType.Datatype != null ) {
 				string format;
@@ -67,16 +67,16 @@
 			var sequence = complexType.ContentTypeParticle as XmlSchemaSequence;
 			if ( sequence != null ) {
 				var items = new List<JsonSchema>();
-				foreach (XmlSchemaParticle childParticle in sequence.Items) {
+				foreach (var childParticle in sequence.Items) {
 					var element = (childParticle as XmlSchemaElement);
 					if ( element == null )
 						continue;
 					var item = element.ProcessElement(formatting);
 					item.Title = element.QualifiedName.Name;
-					item.Id = string.Format("{0}/{1}#", element.QualifiedName.Namespace.StripXsdExtension(), element.QualifiedName.Name);
+					item.Id = $"{element.QualifiedName.Namespace.StripXsdExtension()}/{element.QualifiedName.Name}#";
 					item.WriteSchemaToDirectory(directory);
 					var innerschema = new JsonSchema {
-						Id = string.Format("{0}/{1}#", element.QualifiedName.Namespace.StripXsdExtension(), element.QualifiedName.Name)
+						Id = $"{element.QualifiedName.Namespace.StripXsdExtension()}/{element.QualifiedName.Name}#"
 					};
 					items.Add(new JsonSchema { Title = element.Name, Extends = new List<JsonSchema> { innerschema } });
 				} //addextends
@@ -86,9 +86,7 @@
 			if ( choice != null )
 				schema.Enum = JToken.Parse(choice.ProcessXmlSchemaChoice().ToJsonString(formatting)).ToList();
 			var content = complexType.ContentModel as XmlSchemaSimpleContent;
-			if ( content != null ) {
-				content.ProcessXmlSchemaSimpleContent(schema, formatting);                
-			}
+			content?.ProcessXmlSchemaSimpleContent(schema, formatting);
 			return schema;
 		}
 	}
